@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context){
-                                  return AlertDialog(
+                                return AlertDialog(
                                     title: new Text("Email Check"),
                                     content: new Text("Please input valid Email"),
                                     actions: <Widget>[
