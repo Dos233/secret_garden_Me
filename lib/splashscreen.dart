@@ -125,4 +125,3 @@ class _ProgressIndicatorState extends State<ProgressIndicator>
   }
 }
 
-

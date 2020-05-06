@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:secretgender/mainscreen.dart';
 import 'package:secretgender/registerscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
@@ -9,16 +10,19 @@ main()=>runApp(LoginScreen());
 
 bool rememberMe = false;
 
+
 class LoginScreen extends StatefulWidget {
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
   double screenHeight;
   TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _passEditingController = new TextEditingController();
-  String urlLogin = "http://slumberjer.com/grocery/php/login_user.php";
+  String urlLogin = "http://lossyhome.xyz/login_user.php";
 
   @override
   void initState() {
@@ -111,15 +115,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0)),
-                        minWidth: 100,
+                        minWidth: 80,
                         height: 50,
                         child: Text('Login'),
                         color: Colors.brown,
                         textColor: Colors.white,
                         elevation: 10,
-                        onPressed: (){
-
-                        },
+                        onPressed: () {
+                          _loginUser();
+                        }
                       ),
                     ],
                   ),
@@ -193,6 +197,30 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => RegisterScreen()));
   }
+  void _loginUser(){
+    LoginScreen loginScreen=new LoginScreen();
+    String email = _emailEditingController.text;
+    String password = _passEditingController.text;
+    http.post(urlLogin, body: {
+      "email": email,
+      "password": password,
+    }).then((res) {
+      print(res.body);
+      if (res.body.replaceAll('\n', "") == "success") {
+        Toast.show("Login success", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext context)=>MainScreen(email: email,))
+        );
+      }else{
+        Toast.show("Login failed", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+    }).catchError((err) {
+      print(err);
+    });
+  }
 
   void _forgotPassword() {
     TextEditingController phoneController = TextEditingController();
@@ -223,21 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
             new FlatButton(
               child: new Text("Yes"),
               onPressed: () {
-                String email=_emailEditingController.text;
-                http.post(urlLogin,body: {
-                  "email":email
-                }).then((res){
-                  if (res.body == "success") {
-                      Toast.show("Send success", context,
-                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                      print("You are success !");
-                      } else {
-                      Toast.show("Send failed", context,
-                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                      }
-                });
                 Navigator.of(context).pop();
-
                 print(
                   phoneController.text,
                 );
@@ -254,6 +268,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
+
 
   void _onRememberMeChanged(bool newValue) => setState(() {
     rememberMe = newValue;

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:secretgender/loginscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
-import 'package:common_utils/common_utils.dart';
 
 void main() => runApp(RegisterScreen());
 
@@ -15,7 +13,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   double screenHeight;
   bool _isChecked = false;
-  String urlRegister = "http://study.lossyhome.xyz/register_user.php";
+  String urlRegister = "http://lossyhome.xyz/register_user.php";
   TextEditingController _nameEditingController = new TextEditingController();
   TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _phoneditingController = new TextEditingController();
@@ -54,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget lowerHalf(BuildContext context) {
     return Container(
-      height: 400,
+      height: 430,
       margin: EdgeInsets.only(top: screenHeight / 3.5),
       padding: EdgeInsets.only(left: 10, right: 10),
       child: Column(
@@ -62,7 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           Card(
             elevation: 10,
             child: Container(
-              padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+              padding: EdgeInsets.fromLTRB(20, 10, 2, 10),
               child: Column(
                 children: <Widget>[
                   Align(
@@ -76,34 +74,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  TextFormField(
+                  TextField(
                       controller: _nameEditingController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        hintText: 'Name',
+                        labelText: 'Name',
                         icon: Icon(Icons.person),
-                      ),
-                  ),
-                  TextFormField(
+                      )),
+                  TextField(
                       controller: _emailEditingController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
-                        hintText: 'Email',
+                        labelText: 'Email',
                         icon: Icon(Icons.email),
-                      ),
-                  ),
-                  TextFormField(
+                      )),
+                  TextField(
                       controller: _phoneditingController,
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
-                        hintText: 'Phone',
+                        labelText: 'Phone',
                         icon: Icon(Icons.phone),
-                      ),
-                  ),
-                  TextFormField(
+                      )),
+                  TextField(
                     controller: _passEditingController,
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      labelText: 'Password',
                       icon: Icon(Icons.lock),
                     ),
                     obscureText: true,
@@ -129,83 +124,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       MaterialButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0)),
-                        minWidth: 115,
+                        minWidth: 110,
                         height: 50,
                         child: Text('Register'),
                         color: Colors.brown,
                         textColor: Colors.white,
                         elevation: 10,
-                        onPressed: (){
-                          String name = _nameEditingController.text;
-                          String email = _emailEditingController.text;
-                          String phone = _phoneditingController.text;
-                          String password = _passEditingController.text;
-
-                          if (!_isChecked) {
-                            Toast.show("Please Accept Term", context,
-                                duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-                            return;
-                          }
-                          else if(!RegexUtil.isEmail(email)){
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context){
-                                return AlertDialog(
-                                    title: new Text("Email Check"),
-                                    content: new Text("Please input valid Email"),
-                                    actions: <Widget>[
-                                      // usually buttons at the bottom of the dialog
-                                      new FlatButton(
-                                        child: new Text("OK"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                          else if (!RegexUtil.isMobileSimple(phone)) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context){
-                                  return AlertDialog(
-                                    title: new Text("Phone Check"),
-                                    content: new Text("Please input valid phone"),
-                                    actions: <Widget>[
-                                      // usually buttons at the bottom of the dialog
-                                      new FlatButton(
-                                        child: new Text("OK"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                          else if (name == null||name.isEmpty) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context){
-                                  return AlertDialog(
-                                    title: new Text("Name Check"),
-                                    content: new Text("Name cannot be empty"),
-                                    actions: <Widget>[
-                                      // usually buttons at the bottom of the dialog
-                                      new FlatButton(
-                                        child: new Text("OK"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }else{
-                            _onRegister();
-                          }
-                        },
+                        onPressed: _onRegister,
                       ),
                     ],
                   ),
@@ -257,74 +182,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-
   void _onRegister() {
+    String name = _nameEditingController.text;
+    String email = _emailEditingController.text;
+    String phone = _phoneditingController.text;
+    String password = _passEditingController.text;
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Confirmation Before Registration"),
-          content: new Text("Do you want to register ?"),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Yes"),
-              onPressed: () {
-                _sendEmail();
-              },
-            ),
-            new FlatButton(
-              child: new Text("No"),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
+    if (!_isChecked) {
+      Toast.show("Please Accept Term", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+     http.post (urlRegister, body: {
+      "name": name,
+      "email": email,
+      "phone": phone,
+      "password1": password,
+    }).then((res) {
+      String temp=res.body.toString();
+      print(temp.replaceAll('\n', ""));
+      if (temp.replaceAll('\n', "") == "success"){
+        Toast.show("Registration success", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+        Navigator.pop(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => LoginScreen()));
 
-
+      } else{
+        print('This is wrong:$temp');
+        Toast.show("Registration failed", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+    }).catchError((err) {
+      print(err);
+    });
   }
 
   void _loginScreen() {
     Navigator.pop(context,
         MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
   }
-
   void _onChange(bool value) {
     setState(() {
       _isChecked = value;
       //savepref(value);
-    });
-  }
-  void _sendEmail(){
-    String name = _nameEditingController.text;
-    String email = _emailEditingController.text;
-    String phone = _phoneditingController.text;
-    String password = _passEditingController.text;
-    http.post(urlRegister, body: {
-      "name": name,
-      "email": email,
-      "password": password,
-      "phone": phone,
-    }).then((res) {
-      if (res.body == "success") {
-        Navigator.pop(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => LoginScreen()));
-        Toast.show("Registration success", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-      } else {
-        Toast.show("Registration failed", context,
-            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
-        Navigator.of(context).pop();
-      }
-    }).catchError((err) {
-      print(err);
     });
   }
 
