@@ -14,6 +14,7 @@ class MainScreen extends StatefulWidget {
   MainScreen({Key key, this.email}) : super(key: key);
   final String email;
 
+
   @override
   _MainScreenState createState() {
     return _MainScreenState(email: email);
@@ -238,7 +239,7 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             MaterialButton(
                                 shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0)),
+                                    borderRadius: BorderRadius.circular(22.0)),
                                 minWidth: 100,
                                 height: 50,
                                 child: Text('Delete it'),
