@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:secretgender/mainscreen.dart';
 import 'package:secretgender/loginscreen.dart';
 import 'package:secretgender/editflower.dart';
+import 'user.dart';
 
 class SearchScreen extends StatefulWidget {
-  SearchScreen({Key key,this.flowerdata,this.email}) : super(key: key);
+  SearchScreen({Key key,this.flowerdata,this.email,this.user}) : super(key: key);
   List flowerdata;
   String email;
+  final User user;
 
   @override
   _SearchScreenState createState() {
-    return _SearchScreenState(flowerdata: flowerdata,email: email);
+    return _SearchScreenState(flowerdata: flowerdata,email: email,user: user);
   }
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  _SearchScreenState({Key key,this.flowerdata,this.email}) : super();
+  _SearchScreenState({Key key,this.flowerdata,this.email,this.user}) : super();
   List flowerdata;
   String email;
+  final User user;
 
   @override
   void initState() {
@@ -86,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 onTap: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email,))
+                      MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email,user: user,))
                   );
                 },
               ),

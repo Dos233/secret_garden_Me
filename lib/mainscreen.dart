@@ -316,7 +316,7 @@ class _MainScreenState extends State<MainScreen> {
                   onTap: (){
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email))
+                        MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email,user: user,))
                     );
                   },
                 ),
@@ -330,7 +330,7 @@ class _MainScreenState extends State<MainScreen> {
                     print(flowerdata.length);
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (BuildContext)=>SearchScreen(flowerdata: flowerdata,email: email,))
+                        MaterialPageRoute(builder: (BuildContext)=>SearchScreen(flowerdata: flowerdata,email: email,user: user,))
                     );
                   },
                 ),
@@ -341,7 +341,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   title: Text("Edit Flower Info"),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext)=>EditScreen(flowerdata: flowerdata,email: email,)));
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext)=>EditScreen(flowerdata: flowerdata,email: email,user: user,)));
                   },
                 ),
                 Divider(),

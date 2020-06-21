@@ -45,7 +45,7 @@ class _PaymentHistoryScreenState extends State<PaymentHistoryScreen> {
         appBar: AppBar(
           title: Text('Payment History'),
           leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: (){
-            Navigator.push(
+            Navigator.pop(
                 context,
                 MaterialPageRoute(builder: (BuildContext context)=>MainScreen(user:user, email: email,))
             );

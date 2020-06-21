@@ -5,22 +5,25 @@ import 'package:secretgender/loginscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:secretgender/searchflower.dart';
 import 'package:toast/toast.dart';
+import 'user.dart';
 
 class EditScreen extends StatefulWidget {
-  EditScreen({Key key,this.flowerdata,this.email}) : super(key: key);
+  EditScreen({Key key,this.flowerdata,this.email,this.user}) : super(key: key);
   List flowerdata;
   String email;
+  final User user;
 
   @override
   _EditScreenState createState() {
-    return _EditScreenState(flowerdata: flowerdata,email: email);
+    return _EditScreenState(flowerdata: flowerdata,email: email,user: user);
   }
 }
 
 class _EditScreenState extends State<EditScreen> {
-  _EditScreenState({Key key,this.flowerdata,this.email}) : super();
+  _EditScreenState({Key key,this.flowerdata,this.email,this.user}) : super();
   List flowerdata;
   String email;
+  final User user;
 
   @override
   void initState() {
@@ -88,7 +91,7 @@ class _EditScreenState extends State<EditScreen> {
                 onTap: (){
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email,))
+                      MaterialPageRoute(builder: (BuildContext)=>MainScreen(email: email,user:user))
                   );
                 },
               ),

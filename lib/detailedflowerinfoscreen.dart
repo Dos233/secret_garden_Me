@@ -5,25 +5,28 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
+import 'user.dart';
 
 class DetailedFlowerInfoScreen extends StatefulWidget {
-  DetailedFlowerInfoScreen({Key key,this.flowerdata,this.index,this.email}) : super(key: key);
+  DetailedFlowerInfoScreen({Key key,this.flowerdata,this.index,this.email,this.user}) : super(key: key);
   int index;
   List flowerdata;
   String email;
+  final User user;
 
 
 
   @override
   _DetailedFlowerScreenState createState() {
-    return _DetailedFlowerScreenState(flowerdata: flowerdata,index: index,email: email);
+    return _DetailedFlowerScreenState(flowerdata: flowerdata,index: index,email: email,user: user);
   }
 }
 
 class _DetailedFlowerScreenState extends State<DetailedFlowerInfoScreen> {
-  _DetailedFlowerScreenState({Key key, this.flowerdata, this.index,this.email});
+  _DetailedFlowerScreenState({Key key, this.flowerdata, this.index,this.email,this.user});
   String email;
   List flowerdata;
+  final User user;
   int index;
   List<Marker> allmarker = [];
   Completer<GoogleMapController> _controller = Completer();
@@ -360,7 +363,7 @@ class _DetailedFlowerScreenState extends State<DetailedFlowerInfoScreen> {
                       elevation: 10,
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => MainScreen(email: email,)));
+                            builder: (BuildContext context) => MainScreen(email: email,user: user,)));
                       },
                     ),
                     SizedBox(width: 20,),
