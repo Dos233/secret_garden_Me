@@ -5,6 +5,8 @@ import 'package:secretgender/registerscreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'user.dart';
+import 'dart:convert';
 
 main()=>runApp(LoginScreen());
 
@@ -23,7 +25,9 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _passEditingController = new TextEditingController();
   String urlLogin = "http://lossyhome.xyz/login_user.php";
-
+  String urlLoadUser = "http://lossyhome.xyz/load_user.php";
+  User user;
+  List userlist;
   @override
   void initState() {
     super.initState();
@@ -122,6 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         textColor: Colors.white,
                         elevation: 10,
                         onPressed: () {
+                          _loadUser();
                           _loginUser();
                         }
                       ),
@@ -198,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
         MaterialPageRoute(builder: (BuildContext context) => RegisterScreen()));
   }
   void _loginUser(){
-    LoginScreen loginScreen=new LoginScreen();
     String email = _emailEditingController.text;
     String password = _passEditingController.text;
     http.post(urlLogin, body: {
@@ -211,12 +215,31 @@ class _LoginScreenState extends State<LoginScreen> {
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (BuildContext context)=>MainScreen(email: email,))
+          MaterialPageRoute(builder: (BuildContext context)=>MainScreen(email: email,user: user,))
         );
       }else{
         Toast.show("Login failed", context,
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
+    }).catchError((err) {
+      print(err);
+    });
+  }
+
+  void _loadUser(){
+    String email = _emailEditingController.text;
+    String password = _passEditingController.text;
+    http.post(urlLoadUser, body: {
+      "email": email,
+    }).then((res) {
+      print(res.body);
+      var extractdata = json.decode(res.body);
+      userlist = extractdata['users'];
+        user = new User(
+        name:userlist[0]['NAME'],
+        phone:userlist[0]['PHONE']
+      ) ;
+        print(user.phone);
     }).catchError((err) {
       print(err);
     });

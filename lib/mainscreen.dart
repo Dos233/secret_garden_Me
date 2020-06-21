@@ -4,34 +4,36 @@ import 'package:flutter/material.dart';
 import 'package:secretgender/editflower.dart';
 import 'package:secretgender/loginscreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:secretgender/orderscreen.dart';
+import 'package:secretgender/paymenthistoryscreen.dart';
 import 'dart:convert';
 import 'package:secretgender/searchflower.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toast/toast.dart';
+import 'package:secretgender/detailedflowerinfoscreen.dart';
+import 'user.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key key, this.email}) : super(key: key);
+  MainScreen({Key key, this.email,this.user}) : super(key: key);
   final String email;
+  final User user;
 
 
   @override
   _MainScreenState createState() {
-    return _MainScreenState(email: email);
+    return _MainScreenState(email: email,user: user);
   }
 }
 
 class _MainScreenState extends State<MainScreen> {
-  _MainScreenState({Key key, this.email}) : super();
+  _MainScreenState({Key key, this.email,this.user}) : super();
   List flowerdata;
   final String email;
+  final User user;
   double screenHeight, screenWidth;
-  TextEditingController _idController=new TextEditingController();
   TextEditingController _nameController=new TextEditingController();
-  TextEditingController _durationController=new TextEditingController();
-  TextEditingController _charactersController=new TextEditingController();
-  TextEditingController _positionController=new TextEditingController();
-  TextEditingController _descriptionController=new TextEditingController();
+
 
   File _image;
 
@@ -57,32 +59,7 @@ class _MainScreenState extends State<MainScreen> {
       print(err);
     });
   }
-  _onImageDisplay(int index) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-            content: new Container(
-              height: screenHeight / 2.5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      height: screenWidth / 1.7,
-                      width: screenWidth / 1.5,
-                      decoration: BoxDecoration(
-                        //border: Border.all(color: Colors.black),
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(
-                                  "http://lossyhome.xyz/flowerimage/${flowerdata[index]['ID']}.jpg")))),
-                ],
-              ),
-            ));
-      },
-    );
-  }
+
 
 
 
@@ -142,6 +119,16 @@ class _MainScreenState extends State<MainScreen> {
         home: Scaffold(
           appBar: AppBar(
             title: Text("Secret Garden"),
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: (){
+                    setState(() {
+                      _loadData();
+                    });
+                  },
+              )
+            ],
           ),
           floatingActionButton: SpeedDial(
             backgroundColor: Colors.brown,
@@ -166,6 +153,19 @@ class _MainScreenState extends State<MainScreen> {
                 onTap: (){
                   showDialog(context: context,builder: (_)=>FlowerInfoDialog(flowerdata:flowerdata));
                 }
+              ),
+              SpeedDialChild(
+                  child: Icon(Icons.shopping_cart),
+                  label: "Member Purchase",
+                  labelStyle: TextStyle(
+                    fontSize: 17,
+                  ),
+                  onTap: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context)=>OrderScreen(user: user,email: email,))
+                    );
+                  }
               )
             ],
           ),
@@ -189,7 +189,12 @@ class _MainScreenState extends State<MainScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             GestureDetector(
-                              onTap: () => _onImageDisplay(index),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (BuildContext context)=>DetailedFlowerInfoScreen(flowerdata:flowerdata,index: index,email: email,))
+                                );
+                              },
                               child: Container(
                                   height: screenWidth / 4.5,
                                   width: screenWidth / 4.5,
@@ -272,7 +277,6 @@ class _MainScreenState extends State<MainScreen> {
                   padding: EdgeInsets.all(10),
                 ),
               )
-
             ],
           ),
           drawer: Drawer(
@@ -338,6 +342,16 @@ class _MainScreenState extends State<MainScreen> {
                   title: Text("Edit Flower Info"),
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (BuildContext)=>EditScreen(flowerdata: flowerdata,email: email,)));
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: CircleAvatar(
+                    child: Icon(Icons.history),
+                  ),
+                  title: Text("View Payment History"),
+                  onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (BuildContext)=>PaymentHistoryScreen(user: user,email: email,)));
                   },
                 ),
                 Divider(),

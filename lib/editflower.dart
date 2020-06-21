@@ -196,22 +196,17 @@ class EdittBarDelegate extends SearchDelegate<String>{
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  GestureDetector(
-                    child: Container(
-                        height: screenWidth / 4,
-                        width: screenWidth / 4,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border:
-                            Border.all(color: Colors.black),
-                            image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(
-                                    "http://lossyhome.xyz/flowerimage/${flowerdata[i]['ID']}.jpg")))),
-                    onTap: (){
-                      showDialog(context: context,builder: (_)=>FlowerInfoDialog(flowerdata:flowerdata,list_num: i,));},
-                  ),
-                  
+                  Container(
+                    height: screenWidth / 4,
+                    width: screenWidth / 4,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                        Border.all(color: Colors.black),
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(
+                                "http://lossyhome.xyz/flowerimage/${flowerdata[i]['ID']}.jpg")))),
                   Text(flowerdata[i]['NAME'],
                       maxLines: 1,
                       style: TextStyle(
@@ -244,6 +239,22 @@ class EdittBarDelegate extends SearchDelegate<String>{
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  MaterialButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(22.0)),
+                    minWidth: 100,
+                    height: 50,
+                    child: Text('Edit it'),
+                    color: Colors.green,
+                    textColor: Colors.white,
+                    elevation: 10,
+                    onPressed: (){
+                      showDialog(context: context,builder: (_)=>FlowerInfoDialog(flowerdata:flowerdata,list_num: i,));
+                    },
+                    )
                 ],
               ),
             ),
