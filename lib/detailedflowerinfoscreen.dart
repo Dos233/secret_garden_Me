@@ -362,7 +362,7 @@ class _DetailedFlowerScreenState extends State<DetailedFlowerInfoScreen> {
                       textColor: Colors.white,
                       elevation: 10,
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
+                        Navigator.of(context).pop(MaterialPageRoute(
                             builder: (BuildContext context) => MainScreen(email: email,user: user,)));
                       },
                     ),
