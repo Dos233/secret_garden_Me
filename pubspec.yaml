@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  flutter_html: ^0.8.2
   webview_flutter: ^0.3.14+1
   material_design_icons_flutter: ^3.2.3895
   cached_network_image: ^2.0.0
