@@ -155,19 +155,6 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(
             height: 5,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text("Forgot your password ", style: TextStyle(fontSize: 16.0)),
-              GestureDetector(
-                onTap: _forgotPassword,
-                child: Text(
-                  "Reset Password",
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          )
         ],
       ),
     );
