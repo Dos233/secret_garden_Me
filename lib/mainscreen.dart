@@ -19,7 +19,6 @@ class MainScreen extends StatefulWidget {
   final String email;
   final User user;
 
-
   @override
   _MainScreenState createState() {
     return _MainScreenState(email: email,user: user);
@@ -45,8 +44,6 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-
-
   void _loadData() {
     String urlLoadJobs = "http://lossyhome.xyz/load_flowers.php";
     http.post(urlLoadJobs, body: {}).then((res) {
@@ -59,8 +56,6 @@ class _MainScreenState extends State<MainScreen> {
       print(err);
     });
   }
-
-
 
 
   @override
@@ -537,7 +532,6 @@ class _DialogContentState extends State<DialogContent> {
             duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
       }
     });
-
   }
 }
 
